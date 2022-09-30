@@ -1,33 +1,26 @@
-﻿using IronPdf;
-
-namespace KnitAssist.Logic;
+﻿namespace KnitAssist.Logic;
 
 public class PatternParser : IPatternParser
 {
-    private IFileService _fileService;
+    private IFileServiceWrapper _fileService;
 
-    public PatternParser(IFileService fileService)
+    public PatternParser(IFileServiceWrapper fileService)
     {
         _fileService = fileService;
     }
 
-    public void GetText(string filePath)
+    public string GetText(string filePath)
     {
-        var pdf = GetPdf(filePath);
-    }
-
-    private PdfDocument GetPdf(string filePath)
-    {
-        PdfDocument pdf;
+        string text;
         try
         {
-            pdf = _fileService.GetPdf(filePath);
+            text = _fileService.GetTextFromPdf(filePath);
         }
         catch (Exception e)
         {
             throw new FileNotFoundException(e.Message);
         }
 
-        return pdf;
+        return text;
     }
 }
